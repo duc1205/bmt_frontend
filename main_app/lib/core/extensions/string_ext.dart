@@ -17,4 +17,6 @@ extension StringExt on String {
     }
     return result.trim().toUpperCase();
   }
+
+  String shortNameAvatar() => "https://ui-avatars.com/api/?name=$this&background=random&size=128?color=ffffff";
 }

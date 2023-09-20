@@ -30,7 +30,6 @@ class SplashPageViewModel extends AppViewModel {
 
   Future<Unit> _loadData() async {
     await Future.delayed(const Duration(seconds: 2));
-    Get.to(() => const LoginPage());
     // await _onAppRun();
     await _checkAuth();
     return unit;

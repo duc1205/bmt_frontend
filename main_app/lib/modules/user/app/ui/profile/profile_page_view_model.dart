@@ -77,10 +77,10 @@ class ProfilePageViewModel extends AppViewModel {
 
   Future<Unit> logout() async {
     final sucess = await run(
-      () async => await _logoutUsecase.run(),
+      () => _logoutUsecase.run(),
     );
     if (sucess) {
-      Get.offAll(() => const LoginPage());
+      await Get.offAll(() => const LoginPage());
     }
     return unit;
   }

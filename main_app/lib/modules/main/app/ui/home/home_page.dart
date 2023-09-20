@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:main_app/modules/people/app/widget/people_item_widget.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -28,9 +27,7 @@ class HomePage extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(15.sp),
           child: const Column(
-            children: [
-              PeopleItemWidget(),
-            ],
+            children: [],
           ),
         ),
       ),

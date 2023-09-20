@@ -11,8 +11,6 @@ class User extends Model {
   final String id;
   @JsonKey(name: "name")
   final String name;
-  @JsonKey(name: "username")
-  final String userName;
   @JsonKey(name: "phone_number")
   final String phoneNumber;
   @JsonKey(name: "avatar_url")
@@ -27,7 +25,6 @@ class User extends Model {
   const User({
     required this.id,
     required this.name,
-    required this.userName,
     required this.phoneNumber,
     this.avatarUrl,
     this.createdAt,

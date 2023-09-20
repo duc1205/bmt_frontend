@@ -29,23 +29,18 @@ class LoginPageViewModel extends AppViewModel {
     }
 
     Get.context?.hideKeyboard();
-    // await showLoading();
+    await showLoading();
 
     final phoneWithCountryCode = FormatHelper.formatPhone(phoneController.text.trim());
     final success = await run(
       () async {
-        print("~~~~~~~~~1 $phoneWithCountryCode");
-        print("~~~~~~~~~1 ${passwordController.text}");
-
         await _loginUsecase.run(phoneWithCountryCode, passwordController.text);
       },
       shouldHandleError: true,
     );
 
-    print("~~~~~~~~~ $success");
-
     if (success) {
-      // await hideLoading();
+      await hideLoading();
       phoneController.clear();
       passwordController.clear();
       await Get.offAll(() => const MainPage(), duration: const Duration(seconds: 1));
@@ -75,14 +70,6 @@ class LoginPageViewModel extends AppViewModel {
   Future<Unit> handleError(dynamic error) async {
     if (error is AuthorizationException) {
       print("~~~~~~~~~~~1 $error");
-      // final data = error.response?.data as Map<String, dynamic>;
-      // final errorCode = data["error_code"];
-      // switch (errorCode) {
-      //   case 3:
-      //   default:
-      //     showToast(data["error_message"].toString());
-      //     break;
-      // }
     }
     return unit;
   }

@@ -42,7 +42,7 @@ class RegisterPageViewModel extends AppViewModel {
     if (success) {
       await hideLoading();
       showToast("Successful account registration");
-      Get.offAll(() => const LoginPage(), duration: const Duration(milliseconds: 2));
+      await Get.offAll(() => const LoginPage(), duration: const Duration(milliseconds: 2));
     }
 
     return unit;

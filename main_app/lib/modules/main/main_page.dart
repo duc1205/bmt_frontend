@@ -83,7 +83,7 @@ class _MainPageState extends BaseViewState<MainPage, MainPageViewModel> with Tic
                     color: Colors.orange,
                   ),
                   name: "Club",
-                  isSelected: viewModel.isProfileTabSelected,
+                  isSelected: viewModel.isClubTabSelected,
                 ),
                 TabItemWidget(
                   icon: const Icon(Icons.person),

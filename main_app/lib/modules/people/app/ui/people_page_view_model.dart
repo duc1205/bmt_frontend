@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:main_app/core/abstracts/app_view_model.dart';
 import 'package:main_app/core/helpers/list_params.dart';
+import 'package:main_app/core/helpers/pagination_params.dart';
+import 'package:main_app/core/helpers/sort_params.dart';
 import 'package:main_app/modules/user/domain/models/user.dart';
 import 'package:main_app/modules/user/domain/usecases/get_list_users_usecase.dart';
 import 'package:suga_core/suga_core.dart';
@@ -19,33 +21,40 @@ class PeoplePageViewModel extends AppViewModel {
   final _canLoadMore = Rx<bool>(false);
   bool get canLoadMore => _canLoadMore.value;
 
-  final _isCanClearSearch = false.obs;
-  bool get isCanClearSearch => _isCanClearSearch.value;
+  final _isLoadingMore = false.obs;
+  bool get isLoadingMore => _isLoadingMore.value;
 
   int _page = 1;
+  static const endReachedThreshold = 60;
+  ScrollController listPeopleController = ScrollController();
 
-  final searchTextController = TextEditingController();
   final FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
     getListUser();
-    searchTextController.addListener(() => _isCanClearSearch.value = searchTextController.text.trim().isNotEmpty);
+    listPeopleController.addListener(() {
+      _onGridViewScroll();
+    });
     super.initState();
   }
 
   @override
   void disposeState() {
-    searchTextController.dispose();
+    listPeopleController.dispose();
     super.disposeState();
   }
 
   Future<Unit> getListUser() async {
-    final query = searchTextController.text.isNotEmpty ? searchTextController.text : null;
     await run(() async {
       final listUser = await _getListUsersUsecase.run(
-        listParams: ListParams(),
-        search: query,
+        listParams: ListParams(
+          paginationParams: PaginationParams(
+            page: _page,
+            limit: 10,
+          ),
+          sortParams: SortParams(),
+        ),
       );
       fetchedListUser(listUser);
     });
@@ -64,14 +73,29 @@ class PeoplePageViewModel extends AppViewModel {
     _canLoadMore.value = fetchedListUser.isNotEmpty;
   }
 
-  void onRefresh() {
+  Future<Unit> onRefresh() async {
     _canLoadMore.value = false;
     _page = 1;
-    getListUser();
+    await getListUser();
+    return unit;
   }
 
-  void onClearSearch() {
-    searchTextController.clear();
-    onRefresh();
+  Future<Unit> _onGridViewScroll() async {
+    if (!listPeopleController.hasClients || !_canLoadMore.value || isLoadingMore) {
+      return unit;
+    }
+    if (listPeopleController.position.extentBefore > listPeopleController.position.maxScrollExtent + endReachedThreshold) {
+      return _onLoadMore();
+    }
+    return unit;
+  }
+
+  Future<Unit> _onLoadMore() async {
+    _isLoadingMore.value = true;
+    if (_canLoadMore.value = true) {
+      await getListUser();
+    }
+    _isLoadingMore.value = false;
+    return unit;
   }
 }
