@@ -8,8 +8,8 @@ class RegisterAccountUsecase extends Usecase {
 
   const RegisterAccountUsecase(this._authRepository);
 
-  Future<Unit> run(String username, String name, String password) async {
-    await _authRepository.register(username, name, password);
+  Future<Unit> run(String sdt, String name, String password) async {
+    await _authRepository.register(sdt, name, password);
     return unit;
   }
 }

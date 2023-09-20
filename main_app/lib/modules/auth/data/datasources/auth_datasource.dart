@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:main_app/modules/user/data/datasources/services/me_service.dart';
+import 'package:main_app/modules/user/data/datasources/services/public_user_service.dart';
 import 'package:oauth2/oauth2.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -17,10 +18,12 @@ abstract class AuthDatasource {
 class AuthDatasourceImpl extends AuthDatasource {
   final Oauth2Manager _oauth2manager;
   final MeService _meService;
+  final PublicUserService _publicUserService;
 
   AuthDatasourceImpl(
     this._oauth2manager,
     this._meService,
+    this._publicUserService,
   );
 
   @override
@@ -42,10 +45,11 @@ class AuthDatasourceImpl extends AuthDatasource {
     String password,
   ) async {
     final Map<String, dynamic> data = {
-      "username": sdt,
+      "phone_number": sdt,
       "password": password,
       "name": name,
     };
+    await _publicUserService.registerAccount(data);
     return unit;
   }
 }

@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 // import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:main_app/gen/assets.gen.dart';
+import 'package:main_app/injector.dart';
+import 'package:main_app/modules/user/app/ui/profile/profile_page_view_model.dart';
 import 'package:main_app/modules/user/app/ui/widget/user_info_widget.dart';
+import 'package:suga_core/suga_core.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends BaseViewState<ProfilePage, ProfilePageViewModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,13 +73,15 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    behavior: HitTestBehavior.translucent,
-                    child: UserInfoWidget(
-                      title: "Test",
-                      value: Container(),
-                      icon: Assets.resources.icons.iconProfile.image(),
+                  Obx(
+                    () => GestureDetector(
+                      onTap: () => viewModel.onChangeNameClick(),
+                      behavior: HitTestBehavior.translucent,
+                      child: UserInfoWidget(
+                        title: "${viewModel.user?.name}",
+                        value: Container(),
+                        icon: Assets.resources.icons.iconProfile.image(),
+                      ),
                     ),
                   ),
                   Padding(
@@ -105,7 +116,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () => viewModel.onlogoutClick(),
                     behavior: HitTestBehavior.translucent,
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 27.w),
@@ -153,4 +164,7 @@ class ProfilePage extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  ProfilePageViewModel createViewModel() => injector<ProfilePageViewModel>();
 }

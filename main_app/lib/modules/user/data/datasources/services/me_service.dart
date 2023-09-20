@@ -20,6 +20,12 @@ abstract class MeService {
   @PUT("")
   Future<User> update(@Body() Map<String, dynamic> body);
 
+  @DELETE("")
+  Future<bool> delete();
+
   @POST('/logout')
   Future logout();
+
+  @PUT("/password/change")
+  Future<bool> changePassword(@Body() Map<String, dynamic> body);
 }
