@@ -21,7 +21,7 @@ Future main() async {
   setupEasyLoading();
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('vi')],
+      supportedLocales: const [Locale('en'), Locale('vn')],
       path: 'resources/langs',
       fallbackLocale: const Locale('en'),
       child: const MyApp(),

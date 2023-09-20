@@ -2,67 +2,54 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:main_app/injector.dart';
-import 'package:main_app/modules/auth/app/ui/login/login_page_view_model.dart';
+import 'package:main_app/modules/auth/app/ui/register/register_page_view_model.dart';
 import 'package:suga_core/suga_core.dart';
 import 'package:tap_debouncer/tap_debouncer.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends BaseViewState<LoginPage, LoginPageViewModel> {
-  OutlineInputBorder inputBorder() {
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(15.r),
-      borderSide: BorderSide(color: Colors.black, width: 1.w),
-    );
-  }
-
+class _RegisterPageState extends BaseViewState<RegisterPage, RegisterPageViewModel> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
-      child: Scaffold(
+    OutlineInputBorder inputBorder() {
+      return OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15.r),
+        borderSide: BorderSide(color: Colors.black, width: 1.w),
+      );
+    }
+
+    return Scaffold(
         backgroundColor: Colors.amber.withOpacity(0.15),
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15.w),
+        appBar: AppBar(
+          title: Text(
+            "Đăng ký tài khoản",
+            style: GoogleFonts.libreBaskerville(
+              fontStyle: FontStyle.italic,
+              fontSize: 24.sp,
+              color: Colors.white,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          backgroundColor: Colors.orange,
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+        ),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15.w),
+          child: GestureDetector(
+            onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
             child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(vertical: 50.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 50.h),
-                    child: Center(
-                      child: Text(
-                        'ClubBadminton',
-                        style: GoogleFonts.libreBaskerville(
-                          fontStyle: FontStyle.italic,
-                          fontSize: 36.sp,
-                          fontWeight: FontWeight.w700,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 50.h),
+                  SizedBox(height: 35.h),
                   Text(
-                    'Login',
-                    style: GoogleFonts.libreBaskerville(
-                      fontStyle: FontStyle.italic,
-                      fontSize: 36.sp,
-                    ),
-                  ),
-                  SizedBox(height: 15.h),
-                  Text(
-                    'Số điện thoại',
+                    'Số điện thoại (*)',
                     style: GoogleFonts.libreBaskerville(
                       fontStyle: FontStyle.italic,
                       fontSize: 16.sp,
@@ -72,7 +59,6 @@ class _LoginPageState extends BaseViewState<LoginPage, LoginPageViewModel> {
                   SizedBox(
                     height: 50.h,
                     child: TextField(
-                      // focusNode: viewModel.phoneNode,
                       scrollPadding: EdgeInsets.only(bottom: 120.h),
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(
@@ -90,7 +76,7 @@ class _LoginPageState extends BaseViewState<LoginPage, LoginPageViewModel> {
                   ),
                   SizedBox(height: 25.h),
                   Text(
-                    'Mật khẩu',
+                    'Tên (*)',
                     style: GoogleFonts.libreBaskerville(
                       fontStyle: FontStyle.italic,
                       fontSize: 16.sp,
@@ -100,7 +86,6 @@ class _LoginPageState extends BaseViewState<LoginPage, LoginPageViewModel> {
                   SizedBox(
                     height: 50.h,
                     child: TextField(
-                      // focusNode: viewModel.phoneNode,
                       scrollPadding: EdgeInsets.only(bottom: 120.h),
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(
@@ -113,13 +98,39 @@ class _LoginPageState extends BaseViewState<LoginPage, LoginPageViewModel> {
                       ),
                       textAlign: TextAlign.left,
                       keyboardType: TextInputType.text,
-
+                      controller: viewModel.nameController,
+                    ),
+                  ),
+                  SizedBox(height: 25.h),
+                  Text(
+                    'Mật khẩu (*)',
+                    style: GoogleFonts.libreBaskerville(
+                      fontStyle: FontStyle.italic,
+                      fontSize: 16.sp,
+                    ),
+                  ),
+                  SizedBox(height: 5.h),
+                  SizedBox(
+                    height: 50.h,
+                    child: TextField(
+                      scrollPadding: EdgeInsets.only(bottom: 120.h),
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 13.h,
+                        ),
+                        isDense: true,
+                        enabledBorder: inputBorder(),
+                        focusedBorder: inputBorder(),
+                      ),
+                      textAlign: TextAlign.left,
+                      keyboardType: TextInputType.text,
                       controller: viewModel.passwordController,
                     ),
                   ),
                   SizedBox(height: 25.h),
                   TapDebouncer(
-                    onTap: () => viewModel.onClickLogin(),
+                    onTap: () => viewModel.registerUser(),
                     builder: (context, onTap) => TextButton(
                       onPressed: onTap,
                       style: TextButton.styleFrom(
@@ -133,7 +144,7 @@ class _LoginPageState extends BaseViewState<LoginPage, LoginPageViewModel> {
                         minimumSize: Size(double.infinity, 50.h),
                       ),
                       child: Text(
-                        "Đăng nhập",
+                        "Đăng ký",
                         style: GoogleFonts.libreBaskerville(
                           fontStyle: FontStyle.italic,
                           fontSize: 16.sp,
@@ -142,41 +153,13 @@ class _LoginPageState extends BaseViewState<LoginPage, LoginPageViewModel> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 30.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Bạn chưa có tài khoản?',
-                        style: GoogleFonts.libreBaskerville(
-                          fontSize: 16.sp,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () => viewModel.navigatorToRegisterPage(),
-                        child: Text(
-                          'Đăng ký',
-                          style: GoogleFonts.libreBaskerville(
-                            color: Colors.red,
-                            fontSize: 16.sp,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
                 ],
               ),
             ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   @override
-  LoginPageViewModel createViewModel() => injector<LoginPageViewModel>();
+  RegisterPageViewModel createViewModel() => injector<RegisterPageViewModel>();
 }

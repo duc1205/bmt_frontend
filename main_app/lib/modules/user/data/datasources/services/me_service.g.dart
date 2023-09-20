@@ -13,7 +13,7 @@ class _MeService implements MeService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= '/api/user/v1/me';
+    baseUrl ??= 'http://10.66.51.11:42320/api/user/v1/me';
   }
 
   final Dio _dio;
@@ -76,6 +76,32 @@ class _MeService implements MeService {
   }
 
   @override
+  Future<bool> delete() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<bool>(_setStreamType<bool>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data!;
+    return value;
+  }
+
+  @override
   Future<dynamic> logout() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -98,6 +124,33 @@ class _MeService implements MeService {
           baseUrl,
         ))));
     final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<bool> changePassword(Map<String, dynamic> body) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
+    final _result = await _dio.fetch<bool>(_setStreamType<bool>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/password/change',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data!;
     return value;
   }
 
