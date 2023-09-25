@@ -1,7 +1,7 @@
 class BackendConfig {
-  // static const String baseUrl = "http://10.66.51.11:42320";
+  static const String baseUrl = "http://10.66.51.11:42320";
 
-  static const String baseUrl = "http://192.168.0.104:42320";
+  // static const String baseUrl = "http://192.168.0.104:42320";
 
   static const Duration connectTimeout = Duration(milliseconds: 30000);
   static const Duration receiveTimeout = Duration(milliseconds: 30000);

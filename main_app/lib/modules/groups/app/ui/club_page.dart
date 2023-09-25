@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:main_app/injector.dart';
+import 'package:main_app/modules/groups/app/create/create_team_dialog.dart';
+import 'package:main_app/modules/groups/app/ui/club_page_view_model.dart';
+import 'package:main_app/modules/groups/app/widget/list_club_widget.dart';
+import 'package:suga_core/suga_core.dart';
 
-class ClubPage extends StatelessWidget {
+class ClubPage extends StatefulWidget {
   const ClubPage({super.key});
 
+  @override
+  State<ClubPage> createState() => _ClubPageState();
+}
+
+class _ClubPageState extends BaseViewState<ClubPage, ClubPageViewModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +34,22 @@ class ClubPage extends StatelessWidget {
         automaticallyImplyLeading: false,
         centerTitle: true,
       ),
+      body: Column(
+        children: [
+          Obx(
+            () => SizedBox(
+              height: (ScreenUtil.defaultSize.height - 64).h,
+              child: ListClubWidget(
+                onRefresh: viewModel.onRefresh,
+                scrollController: viewModel.listClubsController,
+                listClub: viewModel.listClub,
+                isLoadingMore: viewModel.isLoadingMore,
+                showScrollShadow: viewModel.reachStartSnap,
+              ),
+            ),
+          ),
+        ],
+      ),
       floatingActionButton: Padding(
         padding: EdgeInsets.all(15.sp),
         child: FloatingActionButton(
@@ -36,4 +63,7 @@ class ClubPage extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  ClubPageViewModel createViewModel() => injector<ClubPageViewModel>();
 }

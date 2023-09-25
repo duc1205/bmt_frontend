@@ -13,7 +13,7 @@ class _PublicUserService implements PublicUserService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'http://192.168.0.104:42320/api/public/v1/user';
+    baseUrl ??= 'http://10.66.51.11:42320/api/public/v1/user';
   }
 
   final Dio _dio;
